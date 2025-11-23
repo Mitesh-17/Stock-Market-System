@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class StockDetailsDTO {
     private String symbol;
+    private String companyName;
     private double currentPrice;
     private double openPrice;
     private double highPrice;
