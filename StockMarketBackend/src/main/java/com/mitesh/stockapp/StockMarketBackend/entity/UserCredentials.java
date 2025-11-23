@@ -1,5 +1,9 @@
 package com.mitesh.stockapp.StockMarketBackend.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -9,7 +13,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "userCredentials")
+@Table(name = "user_Credentials")
 public class UserCredentials {
 
     @Id
@@ -28,4 +32,7 @@ public class UserCredentials {
         message = "Password must contain uppercase, lowercase, number and special character"
     )
     private String password;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
