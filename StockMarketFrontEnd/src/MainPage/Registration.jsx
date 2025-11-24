@@ -170,7 +170,7 @@ const Registration = () => {
         <p className="text-center mt-4">
           Already have an account?{" "}
           <a href="/login" className="text-sky-700 underline cursor-pointer">Login</a>
-        </p>
+        </p> 
       </div>
     </div>
   );
