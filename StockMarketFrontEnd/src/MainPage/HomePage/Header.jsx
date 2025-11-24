@@ -7,7 +7,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full shadow-md bg-white">
+    <div className="w-full shadow-md bg-blue-200">
       <nav className="flex items-center justify-between px-4 md:px-10 py-4">
 
         {/* Logo */}
