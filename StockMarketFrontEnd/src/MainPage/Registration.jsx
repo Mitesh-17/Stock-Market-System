@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { User, Mail, Lock, Phone } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
-
   const [terms, setTerms] = useState(false);
-
 
   const [form, setForm] = useState({
     fullName: "",
@@ -16,36 +13,40 @@ const Registration = () => {
     gender: "",
   });
 
+  // Universal input handler
   const handleChange = (e) => {
-      const { name, value, type } = e.target;
+    const { name, value, type } = e.target;
 
-      setForm({
-        ...form,
-        [name]: value,
-      });
+    setForm({
+      ...form,
+      [name]: value,
+    });
   };
-  
-  const handleSubmit = (e) =>{
-      e.preventDefault();
 
-      console.log("User Full Name :"+form.fullName);
-      console.log("User Email :"+form.email);
-      console.log("User Phone Number :"+form.phone);
-      console.log("User Password :"+form.password);
-      console.log("User Confirm Password :"+form.confirmPassword);
-      console.log("User Gender :"+form.gender);
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      //clear all fields...!
-      setForm({
-        fullName: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirmPassword: "",
-        gender: "",
-      })
-      setTerms(false);
-  }
+    console.log("User Full Name:", form.fullName);
+    console.log("User Email:", form.email);
+    console.log("User Phone Number:", form.phone);
+    console.log("User Password:", form.password);
+    console.log("User Confirm Password:", form.confirmPassword);
+    console.log("User Gender:", form.gender);
+    console.log("Terms Accepted:", terms);
+
+    // Clear all fields
+    setForm({
+      fullName: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      gender: "",
+    });
+
+    // Reset checkbox
+    setTerms(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -144,6 +145,7 @@ const Registration = () => {
                 type="radio"
                 name="gender"
                 value="male"
+                checked={form.gender === "male"}
                 onChange={handleChange}
               />
               Male
@@ -154,6 +156,7 @@ const Registration = () => {
                 type="radio"
                 name="gender"
                 value="female"
+                checked={form.gender === "female"}
                 onChange={handleChange}
               />
               Female
@@ -164,6 +167,7 @@ const Registration = () => {
                 type="radio"
                 name="gender"
                 value="other"
+                checked={form.gender === "other"}
                 onChange={handleChange}
               />
               Other
@@ -175,9 +179,8 @@ const Registration = () => {
         <div className="mb-4 flex items-center gap-2">
           <input
             type="checkbox"
-            name="terms"
-            checked={form.terms}
-            onChange={handleChange}
+            checked={terms}
+            onChange={(e) => setTerms(e.target.checked)}
           />
           <span className="text-sm">
             I agree to the{" "}
@@ -188,14 +191,19 @@ const Registration = () => {
         </div>
 
         {/* Submit Button */}
-        <button className="w-full bg-sky-700 text-white py-3 rounded-lg font-bold hover:bg-sky-800 transition-all">
+        <button
+          className="w-full bg-sky-700 text-white py-3 rounded-lg font-bold hover:bg-sky-800 transition-all"
+          onClick={handleSubmit}
+        >
           Register
         </button>
 
         <p className="text-center mt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-sky-700 underline cursor-pointer">Login</a>
-        </p> 
+          <a href="/login" className="text-sky-700 underline cursor-pointer">
+            Login
+          </a>
+        </p>
       </div>
     </div>
   );
