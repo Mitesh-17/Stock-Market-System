@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
 
+  const [terms, setTerms] = useState(false);
+
+
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -11,16 +14,38 @@ const Registration = () => {
     password: "",
     confirmPassword: "",
     gender: "",
-    terms: false,
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
+      const { name, value, type } = e.target;
+
+      setForm({
+        ...form,
+        [name]: value,
+      });
   };
+  
+  const handleSubmit = (e) =>{
+      e.preventDefault();
+
+      console.log("User Full Name :"+form.fullName);
+      console.log("User Email :"+form.email);
+      console.log("User Phone Number :"+form.phone);
+      console.log("User Password :"+form.password);
+      console.log("User Confirm Password :"+form.confirmPassword);
+      console.log("User Gender :"+form.gender);
+
+      //clear all fields...!
+      setForm({
+        fullName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+        gender: "",
+      })
+      setTerms(false);
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
