@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mitesh.stockapp.StockMarketBackend.dto.UserCredentialsDAO;
+import com.mitesh.stockapp.StockMarketBackend.entity.RegisterUser;
 import com.mitesh.stockapp.StockMarketBackend.entity.UserCredentials;
+import com.mitesh.stockapp.StockMarketBackend.repository.RegisterUserRepo;
 import com.mitesh.stockapp.StockMarketBackend.repository.UserRepository;
 import com.mitesh.stockapp.StockMarketBackend.service.UserService;
 
@@ -14,11 +16,15 @@ public class UserServiceImplementation implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RegisterUserRepo registerUserRepo;
+
+
     @Override
-    public void addNewUser(UserCredentials userCredentials) {
+    public void addNewUser(RegisterUser registerUser) {
         
         try{
-            userRepository.save(userCredentials);
+            registerUserRepo.save(registerUser);
             System.out.println("User Record is Succesfully Inserted...!");
         }catch(Exception e){
             System.err.println("OOPs... "+e);

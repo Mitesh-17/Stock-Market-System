@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import axios from 'axios'
 import { User, Mail, Lock, Phone } from "lucide-react";
 
 const Registration = () => {
-  const [terms, setTerms] = useState(false);
+  const [agree, setTerms] = useState(false);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -13,40 +14,129 @@ const Registration = () => {
     gender: "",
   });
 
-  // Universal input handler
+  const [errors, setErrors] = useState({});
+
+
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
+      const { name, value } = e.target;
 
-    setForm({
-      ...form,
-      [name]: value,
-    });
+      setForm({
+        ...form,
+        [name]: value,
+      });
+
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    console.log("User Full Name:", form.fullName);
-    console.log("User Email:", form.email);
-    console.log("User Phone Number:", form.phone);
-    console.log("User Password:", form.password);
-    console.log("User Confirm Password:", form.confirmPassword);
-    console.log("User Gender:", form.gender);
-    console.log("Terms Accepted:", terms);
+  // ---------------- VALIDATION ----------------
+  const validateForm = () => {
+    const newErrors = {};
 
-    // Clear all fields
-    setForm({
-      fullName: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      gender: "",
-    });
+    // Full Name
+    if (!form.fullName.trim()) {
+      newErrors.fullName = "Full Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.fullName)) {
+      newErrors.fullName = "Full Name should contain only letters";
+    }
 
-    // Reset checkbox
-    setTerms(false);
+    // Email
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    // Phone
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^\d{10}$/.test(form.phone)) {
+      newErrors.phone = "Phone number must be exactly 10 digits";
+    }
+
+    // Password
+    if (!form.password) {
+      newErrors.password = "Password is required";
+    } else if (form.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    // Confirm Password
+    if (!form.confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password is required";
+    } else if (form.password !== form.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    // Gender
+    if (!form.gender) {
+      newErrors.gender = "Please select a gender";
+    }
+
+    // Terms
+    if (!agree) {
+      newErrors.agree = "You must accept the Terms & Conditions";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
+
+  // ---------------- SUBMIT ----------------
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if (!validateForm()) return;
+
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/stock/register",   // Spring Boot API endpoint
+          {
+            fullName: form.fullName,
+            email: form.email,
+            phone: form.phone,
+            password: form.password,
+            confirmPassword: form.confirmPassword,
+            gender: form.gender,
+            termsAccepted: agree
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        alert("Registration Successful!");
+
+        console.log("Server Response:", response.data);
+
+        // Clear all fields
+        setForm({
+          fullName: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+          gender: "",
+        });
+
+        setTerms(false);
+        setErrors({});
+      } catch (error) {
+        console.error("Registration Error:", error);
+
+        if (error.response) {
+          alert("Registration failed: " + error.response.data.message);
+        } else {
+          alert("Something went wrong. Try again.");
+        }
+      }
+    };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -70,6 +160,7 @@ const Registration = () => {
               className="w-full bg-transparent outline-none ml-2"
             />
           </div>
+          {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
         </div>
 
         {/* Email */}
@@ -86,6 +177,7 @@ const Registration = () => {
               className="w-full bg-transparent outline-none ml-2"
             />
           </div>
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
         </div>
 
         {/* Phone */}
@@ -102,6 +194,7 @@ const Registration = () => {
               className="w-full bg-transparent outline-none ml-2"
             />
           </div>
+          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
         </div>
 
         {/* Password */}
@@ -118,6 +211,7 @@ const Registration = () => {
               className="w-full bg-transparent outline-none ml-2"
             />
           </div>
+          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -134,6 +228,9 @@ const Registration = () => {
               className="w-full bg-transparent outline-none ml-2"
             />
           </div>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+          )}
         </div>
 
         {/* Gender */}
@@ -173,13 +270,14 @@ const Registration = () => {
               Other
             </label>
           </div>
+          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
         </div>
 
-        {/* Terms and Conditions */}
+        {/* Terms */}
         <div className="mb-4 flex items-center gap-2">
           <input
             type="checkbox"
-            checked={terms}
+            checked={agree}
             onChange={(e) => setTerms(e.target.checked)}
           />
           <span className="text-sm">
@@ -189,8 +287,9 @@ const Registration = () => {
             </a>
           </span>
         </div>
+        {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           className="w-full bg-sky-700 text-white py-3 rounded-lg font-bold hover:bg-sky-800 transition-all"
           onClick={handleSubmit}
