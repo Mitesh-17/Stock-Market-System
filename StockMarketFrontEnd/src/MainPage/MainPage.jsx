@@ -2,7 +2,7 @@ import React from 'react'
 import Header from './HomePage/Header'
 import Page1 from './HomePage/Page1'
 import Page2 from './HomePage/Page2'
-import Page3 from './Page3'
+import Page3 from './HomePage/Page3'
 
 const MainPage = () => {
   return (

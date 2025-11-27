@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { LogIn , AtSignIcon } from 'lucide-react'
 
 const Header = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full shadow-md bg-blue-200">
+    <div className="w-full shadow-md bg-blue-100">
       <nav className="flex items-center justify-between px-4 md:px-10 py-4">
 
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-blue-600 cursor-pointer">
+        <h1 className="text-2xl font-bold text-gray-800 cursor-pointer">
           StockTrade
         </h1>
 
@@ -19,9 +20,9 @@ const Header = () => {
         <div className="hidden md:flex gap-4">
           <button
             onClick={() => navigate('/login')}
-            className="px-5 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition"
+            className="flex items-center gap-4 px-5 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition"
           >
-            Login
+          Login  <LogIn size={20}/> 
           </button>
 
           <button
@@ -56,7 +57,7 @@ const Header = () => {
             onClick={() => { setOpen(false); navigate('/signIn'); }}
             className="w-full text-left px-4 py-2 rounded-lg border border-blue-500 text-blue-500 font-medium hover:bg-blue-500 hover:text-white transition"
           >
-            Sign Up
+            Sign Up 
           </button>
         </div>
       )}

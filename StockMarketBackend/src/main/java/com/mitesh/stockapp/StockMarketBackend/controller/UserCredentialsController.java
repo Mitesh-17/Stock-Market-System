@@ -3,6 +3,7 @@ package com.mitesh.stockapp.StockMarketBackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.mitesh.stockapp.StockMarketBackend.entity.ForgotPassword;
 import com.mitesh.stockapp.StockMarketBackend.entity.LoginRequest;
 import com.mitesh.stockapp.StockMarketBackend.entity.RegisterUser;
 import com.mitesh.stockapp.StockMarketBackend.service.UserService;
@@ -23,5 +24,15 @@ public class UserCredentialsController {
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
         return userService.loginUser(loginRequest);
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestBody LoginRequest loginRequest){
+        return userService.forgotPassword(loginRequest);
+    }
+
+    @PatchMapping("/update-password")
+    public String updatePassword(@RequestBody ForgotPassword forgotPassword){
+        return userService.updatePassword(forgotPassword);
     }
 }
