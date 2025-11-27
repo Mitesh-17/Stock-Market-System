@@ -6,9 +6,14 @@ import ProfilePage from "./Profile";
 import MarketPage from "./Market";
 import PortfolioPage from "./Portfolio";
 import TransactionPage from "./Transaction";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+
+  const navigate = useNavigate()
+  
   const [open, setOpen] = useState(false);
+  
   const [activePage, setActivePage] = useState("Home");
 
   return (
@@ -63,8 +68,11 @@ const Navbar = () => {
               <RefreshCw size={20} /> Transactions
             </div>
 
-            <div onClick={() => alert("Are you want to Logout?")} 
-            className="flex items-center gap-4 hover:bg-emerald-800 p-2 rounded-md cursor-pointer">
+            <div onClick={() => {
+                if (window.confirm("Are you sure you want to logout?")) {
+                  navigate("/login");
+                }
+              }}className="flex items-center gap-4 hover:bg-emerald-800 p-2 rounded-md cursor-pointer">
               <LogOut size={20} /> Logout
             </div>
           </div>

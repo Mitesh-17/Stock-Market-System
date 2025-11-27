@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from 'axios'
 import { User, Mail, Lock, Phone } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+
+  const navigate = useNavigate();
   const [agree, setTerms] = useState(false);
 
   const [form, setForm] = useState({
@@ -112,6 +115,8 @@ const Registration = () => {
         );
 
         alert("Registration Successful!");
+
+        navigate("/login")
 
         console.log("Server Response:", response.data);
 
