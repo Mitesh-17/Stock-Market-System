@@ -1,15 +1,11 @@
 package com.mitesh.stockapp.StockMarketBackend.service;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
+import com.mitesh.stockapp.StockMarketBackend.entity.LoginRequest;
 import com.mitesh.stockapp.StockMarketBackend.entity.RegisterUser;
 
-@Service
-@Component
 public interface UserService {
 
-    public void addNewUser(RegisterUser registerUser);
+    String addNewUser(RegisterUser registerUser);
 
-    public void getUserByID(Long id);
+    String loginUser(LoginRequest loginRequest);
 }

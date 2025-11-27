@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UserCredentialsDAO {
-    private int userID;
+    private Long userID;
     private String email;
     private String password;
 }

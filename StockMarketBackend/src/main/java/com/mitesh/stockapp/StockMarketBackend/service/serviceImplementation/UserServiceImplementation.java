@@ -1,53 +1,49 @@
 package com.mitesh.stockapp.StockMarketBackend.service.serviceImplementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.mitesh.stockapp.StockMarketBackend.dto.UserCredentialsDAO;
+import com.mitesh.stockapp.StockMarketBackend.entity.LoginRequest;
 import com.mitesh.stockapp.StockMarketBackend.entity.RegisterUser;
-import com.mitesh.stockapp.StockMarketBackend.entity.UserCredentials;
 import com.mitesh.stockapp.StockMarketBackend.repository.RegisterUserRepo;
-import com.mitesh.stockapp.StockMarketBackend.repository.UserRepository;
 import com.mitesh.stockapp.StockMarketBackend.service.UserService;
 
-@Component
-public class UserServiceImplementation implements UserService{
-
-    @Autowired
-    private UserRepository userRepository;
+@Service
+public class UserServiceImplementation implements UserService {
 
     @Autowired
     private RegisterUserRepo registerUserRepo;
 
-
     @Override
-    public void addNewUser(RegisterUser registerUser) {
-        
-        try{
+    public String addNewUser(RegisterUser registerUser) {
+        try {
+            RegisterUser existing = registerUserRepo.findByEmail(registerUser.getEmail());
+
+            if (existing != null) {
+                return "Email already exists!";
+            }
+
             registerUserRepo.save(registerUser);
-            System.out.println("User Record is Succesfully Inserted...!");
-        }catch(Exception e){
-            System.err.println("OOPs... "+e);
+            return "User registered successfully!";
+
+        } catch (Exception e) {
+            return "Registration failed: " + e.getMessage();
         }
     }
 
-
     @Override
-    public void getUserByID(Long id) {
+    public String loginUser(LoginRequest loginRequest) {
 
-        UserCredentials user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User does not exist with the given ID: " + id));
+        RegisterUser user = registerUserRepo.findByEmail(loginRequest.getEmail());
 
-        
-        UserCredentialsDAO dto = new UserCredentialsDAO(
-                    user.getUserID(),
-                    user.getEmail(),
-                    user.getPassword()
-            );
+        if (user == null) {
+            return "No user found with this email!";
+        }
 
-            // Print DTO in one line
-            System.out.println(dto);
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            return "Incorrect password!";
+        }
+
+        return "Login successful!";
     }
-
-    
 }

@@ -1,5 +1,8 @@
 package com.mitesh.stockapp.StockMarketBackend.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -9,39 +12,36 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_info")
+@Table(name = "user_credentials")
 public class RegisterUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userid;
 
-    // Full Name
     @NotBlank(message = "Full name is required")
     @Size(min = 2, message = "Full name must contain at least 2 letters")
-    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Full name must contain only letters")
     private String fullName;
 
-    // Email
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
+    @Column(unique = true, nullable = false)
     private String email;
 
-    // Phone Number
     @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be exactly 10 digits")
     private String phone;
 
-    // Password
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
-    private String confirmPassword;
+    private String password;
 
-    // Gender (Male / Female / Other)
     @NotBlank(message = "Gender is required")
     private String gender;
 
-    // Terms checkbox
     @NotBlank(message = "You must accept Terms & Conditions")
     private String termsAccepted;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
