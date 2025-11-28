@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Mail, ArrowLeft, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer , toast} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+  
   const [showPasswordFields, setShowPasswordFields] = useState(false);
 
   const [newPassword, setNewPassword] = useState("");
@@ -15,6 +18,13 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // success | error
 
+  const SuccessPasswordToastify = () =>{
+    toast.success("Password Successfully Changed!");
+  }
+  
+  const PasswordDoNotMatchToastify = () =>{
+    toast.warning("Password do not matched!");
+  }
   // STEP 1: Verify Email
   const handleEmailSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +65,7 @@ const ForgotPassword = () => {
                 return;
             }
         }catch(error){
-            console.error("Emain Error:", error);
+            console.error("Email Error:", error);
 
             if (error.response) {
                 alert("Email Not Found: " + error.response.data.message);
@@ -81,17 +91,9 @@ const ForgotPassword = () => {
                         headers : { "Content-Type": "application/json" }
                     }
             );
-
-            if(response.data == "updated"){
-                setMessage("Password successfuly Reset..!");
-                setMessageType("success");
-            }else{
-                alert(response.data);
-                return;
-            }
         }
         catch(error){
-            console.error("Emain Error:", error);
+            console.error("Email Error:", error);
 
             if (error.response) {
                 alert("Email Not Found: " + error.response.data.message);
@@ -112,15 +114,11 @@ const ForgotPassword = () => {
     }
 
     if (newPassword !== confirmPassword) {
-      setMessage("Passwords do not match.");
-      setMessageType("error");
+      PasswordDoNotMatchToastify();
       return;
     }
 
-    setMessage("Password reset successfully!");
-    setMessageType("success");
-
-    // After success → redirect to login after 2 sec
+    SuccessPasswordToastify();
     setTimeout(() => {
       navigate("/login");
     }, 2000);
@@ -229,6 +227,8 @@ const ForgotPassword = () => {
             >
               Reset Password
             </button>
+
+            <ToastContainer position="top-right" autoClose={2000} />
           </form>
         )}
       </div>
