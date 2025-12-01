@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { toast , ToastContainer } from "react-toastify";
 
 const Login = () => {
 
@@ -17,6 +18,14 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   
+  const successLogin = () =>{
+      toast.success("Password Successfully Changed!");
+  }
+    
+  const unsuccessLogin = () =>{
+      toast.error("Incorrect Email and Password!");
+  }
+
   // ---------------- FORM VALIDATION ---------------- //
   const validateForm = () => {
     const newErrors = {};
@@ -62,7 +71,16 @@ const Login = () => {
           navigate("/stock-app/dashboard");
       } 
       else {
-        alert(response.data);
+        console.log(response.data)
+        unsuccessLogin();
+        setTimeout(() => {
+            setUserData({
+              email: "",
+              password: ""
+            });
+            setCaptchaChecked(false);
+            setRememberMe(false);
+        },1000)
         return;
       }
 
@@ -172,6 +190,8 @@ const Login = () => {
                 Sign Up
               </a>
             </p>
+
+            <ToastContainer position="top-right" autoClose={1000} />
         </div>
     </div>
   );
