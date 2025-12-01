@@ -57,7 +57,7 @@ const Transaction = () => {
               {/* Row Example */}
               <tr className="border-b hover:bg-gray-50 transition">
                 <td className="p-4">TXN12345</td>
-                <td className="p-4">TCS</td>
+                <td className="p-4">AMZN</td>
                 <td className="p-4 font-semibold text-green-600">Buy</td>
                 <td className="p-4">10</td>
                 <td className="p-4">₹3500</td>
