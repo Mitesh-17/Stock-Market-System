@@ -87,7 +87,7 @@ const Navbar = () => {
       </div>
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 ml-0 md:ml-[16vw] p-6 min-h-screen bg-linear-to-br from-blue-100 to-blue-300">
+      <div className="flex-1 ml-0 md:ml-[16vw] p-6 min-h-screen bg-linear-to-br">
         {activePage === "Home" && <HomePage />}
         {activePage === "Profile" && <ProfilePage />}
         {activePage === "Market" && <MarketPage />}
